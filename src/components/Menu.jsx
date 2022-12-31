@@ -30,34 +30,37 @@ const Menu = () => {
     getData();
   }, []);
 
-  if (isLoading) {
-    return <LoaderPage />;
-  }
-
-  if (isError) {
-    return <ErrorPage message={errorMessage} />;
-  }
-
   return (
-    <div className="container wrapper-menu mt-5">
-      <h2 className="text-center">Le nostre scelte</h2>
-      <NavigationBar
-        links={navigationMenu}
-        activeNavigation={activeNavigation}
-        setActiveNavigation={setActiveNavigation}
-      />
-      {/* Menu List */}
-      <div className="row row-cols-1 row-cols-sm-2 g-5">
-        {menuGelati.map((el) => {
-          if (activeNavigation == "all" || activeNavigation == el.categoria) {
-            return (
-              <div className="col px-4">
-                <Gelato {...el} key={el.id} />
-              </div>
-            );
-          }
-        })}
-      </div>
+    <div className="container-xxl py-2">
+      <h1>Nice Cream</h1>
+      {!isLoading && !isError ? (
+        <div className="container wrapper-menu mt-5">
+          <h2 className="text-center">Le nostre scelte</h2>
+          <NavigationBar
+            links={navigationMenu}
+            activeNavigation={activeNavigation}
+            setActiveNavigation={setActiveNavigation}
+          />
+          <div className="row row-cols-1 row-cols-sm-2 g-5">
+            {menuGelati.map((el) => {
+              if (
+                activeNavigation == "all" ||
+                activeNavigation == el.categoria
+              ) {
+                return (
+                  <div className="col px-4" key={el.id}>
+                    <Gelato {...el} />
+                  </div>
+                );
+              }
+            })}
+          </div>
+        </div>
+      ) : isLoading && !isError ? (
+        <LoaderPage />
+      ) : (
+        <ErrorPage message={errorMessage} />
+      )}
     </div>
   );
 };
